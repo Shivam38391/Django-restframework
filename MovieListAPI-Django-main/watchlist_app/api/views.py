@@ -8,6 +8,7 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.exceptions import ValidationError
 from watchlist_app.api.permissions import AdminReadOnly , ReviewUserOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -48,7 +49,7 @@ class ReviewList(generics.ListAPIView): #to perform list and create
     
     # queryset = Review.objects.all() #default gueryset
     serializer_class = ReviewSerializer
-    
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Review.objects.filter(watchlist = pk) #review list of whatchist with ok id

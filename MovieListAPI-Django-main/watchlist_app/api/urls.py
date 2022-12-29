@@ -7,7 +7,7 @@ urlpatterns = [
     path('<int:pk>/', WatchDetailAV.as_view(), name='movie-details'),
     
     path('stream/', StreamlistAV.as_view(), name='stream-list'),
-    path('stream/<int:pk>', StreamDetailAV.as_view(), name='stream-details'),
+    path('stream/<int:pk>/', StreamDetailAV.as_view(), name='stream-details'),
     
     # path('review', ReviewList.as_view(), name='review-list'),
     # path('review/<int:pk>', ReviewDetail.as_view(), name='review-list'),
