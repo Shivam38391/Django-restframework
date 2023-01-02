@@ -33,8 +33,10 @@ class ReviewSerializer(serializers.ModelSerializer):
 ########################################################### watcjhlist serializer########################################################
 class WatchlistSerializer(serializers.ModelSerializer):
     
-    reviews = ReviewSerializer(many=True,read_only=True) #to show relationships with the help of related_name="reviews"
+    # by un commenting this line oure api shows reviews
+    # reviews = ReviewSerializer(many=True,read_only=True) #to show relationships with the help of related_name="reviews"
     
+    plateform = serializers.CharField(source= 'plateform.name')
     
     class Meta:
         model = Watchlist

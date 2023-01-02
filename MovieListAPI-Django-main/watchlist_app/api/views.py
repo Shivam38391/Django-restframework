@@ -7,12 +7,17 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.exceptions import ValidationError
-from watchlist_app.api.permissions import AdminReadOnly , ReviewUserOrReadOnly
+from watchlist_app.api.permissions import IsAdminReadOnly , IsReviewUserOrReadOnly
 from rest_framework.permissions import IsAuthenticated
+
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 
 class ReviewCreate(generics.CreateAPIView): #to perform list and create
+    permission_classes = [IsAuthenticated]
+    
     
     queryset = Review.objects.all() #default gueryset
     ############or################
@@ -49,7 +54,10 @@ class ReviewList(generics.ListAPIView): #to perform list and create
     
     # queryset = Review.objects.all() #default gueryset
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['review_user__username', 'active']
+    
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Review.objects.filter(watchlist = pk) #review list of whatchist with ok id
@@ -61,7 +69,7 @@ class ReviewList(generics.ListAPIView): #to perform list and create
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView): #to perform list and create
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [ReviewUserOrReadOnly]
+    permission_classes = [IsReviewUserOrReadOnly]
 
 
 
@@ -91,6 +99,8 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView): #to perform list and 
 
 ######################streamlistview #####################
 class StreamlistAV(APIView):
+    permission_classes = [IsAdminReadOnly]
+    
     
     def get(self, request):
         
@@ -114,6 +124,8 @@ class StreamlistAV(APIView):
 #################detail av #################
 
 class StreamDetailAV(APIView):
+    permission_classes = [IsAdminReadOnly]
+    
     
     def get(self, request, pk):
         
@@ -143,6 +155,8 @@ class StreamDetailAV(APIView):
 
 ###################watchlitview################
 class WatchlistAV(APIView):
+    permission_classes = [IsAdminReadOnly]
+    
     
     def get(self, request):
         
@@ -164,6 +178,8 @@ class WatchlistAV(APIView):
         
 #################detail av #################
 class WatchDetailAV(APIView):
+    
+    permission_classes = [IsAdminReadOnly]
     
     def get(self, request, pk):
         
